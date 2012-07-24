@@ -16,7 +16,7 @@ namespace UrlImageViewHelper
 {
 	public class UrlImageViewHelper
 	{
-		const string LOGTAG = "UrlImageViewHelper";
+		public const string LOGTAG = "UrlImageViewHelper";
 		public const int CACHE_DURATION_INFINITE = int.MaxValue;
     	public const int CACHE_DURATION_ONE_DAY = 1000 * 60 * 60 * 24;
     	public const int CACHE_DURATION_TWO_DAYS = CACHE_DURATION_ONE_DAY * 2;
@@ -157,8 +157,7 @@ namespace UrlImageViewHelper
 					if (!file.EndsWith(".urlimage"))
 						continue;
 
-					Console.WriteLine(file);
-
+					
 					var f = new System.IO.FileInfo(file);
 					if (DateTime.UtcNow > f.LastWriteTimeUtc)
 						f.Delete();
@@ -228,9 +227,13 @@ namespace UrlImageViewHelper
 					else
 					{
 						//TODO: File cache expired, refreshing
+						Android.Util.Log.Debug(LOGTAG, "File Cache Expired: " + file.Name);
 					}
 				}
-				catch { }
+				catch (Exception ex)
+				{
+					Android.Util.Log.Debug(LOGTAG, "File Cache Exception " + ex.ToString());
+				}
 			}
 
 			if (imageView != null)
